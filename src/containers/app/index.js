@@ -1,17 +1,17 @@
 import React from 'react';
-import { Route, Link } from 'react-router-dom'
+import { Route } from 'react-router-dom'
 import Home from '../home'
 import About from '../about'
+import Landing from '../landing'
+import Header from '../../modules/header';
+
 
 const App = () => (
   <div>
-    <header>
-      <Link to="/">Home</Link>
-      <Link to="/about-us">About</Link>
-    </header>
-
+    <Header />
     <main>
-      <Route exact path="/" component={Home} />
+      <Route exact path="/" component={Landing} />
+      <Route exact path="/home" component={Home} />
       <Route exact path="/about-us" component={About} />
     </main>
   </div>
