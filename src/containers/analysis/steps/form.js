@@ -25,8 +25,8 @@ class Form extends React.Component {
     e.preventDefault();
     // update data
     const { value, key } = this.state;
-    // this.props.updateData(value.value, key);
-    this.props.submit(value.value, key);
+    this.props.updateData(value.value, key);
+    this.props.submit();
   }
 
   updateKey = (e) => {

@@ -1,10 +1,6 @@
 import React from 'react';
 
 class Start extends React.Component {
-  submit = (e) => {
-    e.preventDefault();
-    this.props.submit();
-  }
   render() {
     return (
       <div class="card card-info">
@@ -14,7 +10,7 @@ class Start extends React.Component {
           </div>
           <h5 class="tx-inverse mg-b-20">Welcome to tldr</h5>
           <p>Trying to understand thousands of comments, but don't have the time? tldr has got your back. Using natural language processing and sentiment analysis, tldr can help to simplify a lot of comments down into a bite-sized analysis you can quickly use.</p>
-          <a href='' onClick={this.submit} class="btn btn-primary btn-block">Get Started</a>
+          <a href='' onClick={this.props.submit} class="btn btn-primary btn-block">Get Started</a>
         </div>
       </div>
     );
