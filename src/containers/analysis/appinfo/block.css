@@ -1,0 +1,6 @@
+.block {
+  margin-bottom: 30px;
+background-color: #fff;
+-webkit-box-shadow: 0 2px rgba(0, 0, 0, 0.01);
+box-shadow: 0 2px rgba(0, 0, 0, 0.01);
+}

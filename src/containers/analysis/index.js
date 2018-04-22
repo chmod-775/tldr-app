@@ -7,27 +7,41 @@ import {
   setKey
 } from '../../modules/comments'
 
-import AppInfo from './appinfo';
+import AppInfo from './appinfo/index.js';
+import Comments from './comments';
 
 class Analysis extends React.Component {
+  constructor(){
+    super();
+    this.state = {
+      options: {
+        showPositive: true,
+        showNegative: false,
+        posHigh: 100,
+        posLow: 80,
+        negHigh: 20,
+        negLow: 0,
+      },
+    }
+  }
+
   updateData = async (type, key) => {
     await this.props.setType(type);
     await this.props.setKey(key);
   }
 
+  updateOptions= (options) => {
+    this.setState({ options })
+  }
+
   render() {
+    const { app } = this.props;
+    const comments = filterComments(this.state.options, app.comments);
     return (
-      <div>
-        <div class="slim-mainpanel">
-          <div class="container">
-            <div class="card card-dash-chart-one mg-t-20 mg-sm-t-30">
-              <div class="row no-gutters">
-                <div class="col-lg-12">
-                  <AppInfo updateData={this.updateData} />
-                </div>
-              </div>
-            </div>
-          </div>
+      <div class="slim-mainpanel">
+        <div class="container pd-t-50">
+          <AppInfo updateData={this.updateData} app={app} updateOptions={this.updateOptions}/>
+          <Comments comments={comments}/>
         </div>
       </div>
     )
@@ -35,18 +49,39 @@ class Analysis extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  count: state.counter.count,
-  isIncrementing: state.counter.isIncrementing,
-  isDecrementing: state.counter.isDecrementing
+  app: state.comments.app,
 })
 
 const mapDispatchToProps = dispatch => bindActionCreators({
   setType,
   setKey,
-  changePage: () => push('/about-us')
+  changePage: () => push('/about-us'),
 }, dispatch)
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(Analysis)
+
+
+function filterComments(options, comments) {
+  let positiveComments = [];
+  let negativeComments = [];
+  if (options.showPositive) {
+    positiveComments = comments.filter((comment) => {
+      const sentiment = comment.sentiment * 100;
+      const low = options.posLow;
+      const high = options.posHigh;
+      return (sentiment >= low) && (sentiment <= high);
+    })
+  }
+  if (options.showNegative) {
+    negativeComments = comments.filter((comment) => {
+      const sentiment = comment.sentiment * 100;
+      const low = options.negLow;
+      const high = options.negHigh;
+      return (sentiment >= low) && (sentiment <= high);
+    })
+  }
+  return [ ...positiveComments, ...negativeComments];
+}

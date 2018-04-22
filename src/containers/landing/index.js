@@ -2,7 +2,7 @@ import React from 'react';
 import { push } from 'react-router-redux';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { setType, setKey } from '../../modules/comments';
+import { setType, setKey, setApp, setComments } from '../../modules/comments';
 
 import * as request from '../../modules/request';
 
@@ -16,19 +16,18 @@ class Landing extends React.Component {
 
   getAnalysis = async (type, key) => {
     // const { type, key } = this.props;  // removed because of bug
-    console.log(this.props);
     // send request and wait
     const response = await request.getMockData(type, key);
-    console.log("here");
-    console.log(response);
     // if good request, change to analysis page
-    if (true) {
+    if (response.success) {
+      console.log(this.props);
+      this.props.setApp(response.data);
+      // save data
       this.props.loadAnalysis();
       return true;
     } else {
       // else go to error page
       return false;
-
     }
   }
 
@@ -59,6 +58,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => bindActionCreators({
   setType,
   setKey,
+  setApp,
+  setComments,
   loadAnalysis: () => push('/analysis')
 }, dispatch)
 
